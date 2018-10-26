@@ -2,6 +2,7 @@ package body
 
 import (
 	"flag"
+	"os"
 	"testing"
 
 	"github.com/sirupsen/logrus"
@@ -11,8 +12,8 @@ import (
 
 func Test_body(t *testing.T) {
 	flag.Set("alsologtostderr", "true")
-	tb := &BaiduBody{Core: core.NewCore("", "")}
-	resp, err := tb.Track("/home/wanglei/Pictures/test2.jpeg")
+	tb := &BaiduBody{Core: core.NewCore(os.Getenv("BAIDU_KEY"), os.Getenv("BAIDU_SECRET"))}
+	resp, err := tb.Track("./test.jpeg")
 	if err != nil {
 		logrus.Info(err)
 		return

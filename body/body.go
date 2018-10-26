@@ -43,16 +43,15 @@ type TrackResult struct {
 }
 
 func (b *BaiduBody) Track(imgurl string) (*TrackResult, error) {
-	img, err := b.encodeImg(imgurl)
+	img, _, _, err := b.encodeImg(imgurl)
 	if err != nil {
 		return nil, err
 	}
 	req := url.Values{
-		// "dynamic":   []string{"false"},
 		"case_id":   []string{strconv.FormatInt(time.Now().Unix(), 10)},
 		"case_init": []string{"false"},
 		"image":     []string{img},
-		"dynamic":   []string{"true"},
+		"dynamic":   []string{"false"},
 		//"area":      []string{"0", "0", "0", "0", "0", "0", "0", "0"},
 
 	}
@@ -70,21 +69,22 @@ func (b *BaiduBody) Track(imgurl string) (*TrackResult, error) {
 
 	return &ret.TrackResult, nil
 }
-func (b *BaiduBody) encodeImg(imgURL string) (string, error) {
+func (b *BaiduBody) encodeImg(imgURL string) (encodeRet string, width int, height int, err error) {
 	file, err := os.Open(imgURL)
 	if err != nil {
-		return "", err
+		return "", 0, 0, err
 	}
 	defer file.Close()
 	bts, err := ioutil.ReadAll(file)
 	if err != nil {
-		return "", err
+		return "", 0, 0, err
 	}
-	ret := base64.StdEncoding.EncodeToString(bts)
+	encodeRet = base64.StdEncoding.EncodeToString(bts)
 	image, _, err := image.DecodeConfig(file)
 	if err != nil {
-		return "", err
+		return "", 0, 0, err
 	}
-	image.Width
-	return ret, nil
+	width = image.Width
+	height = image.Height
+	return
 }

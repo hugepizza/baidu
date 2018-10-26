@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package funxdata.baidu;
+
+import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "baidu";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.messagename_all) = false;
+option (gogoproto.goproto_unkeyed_all) = false;
+option (gogoproto.goproto_sizecache_all) = false;
+option (gogoproto.goproto_unrecognized_all) = false;
+
+service BodyTrack {
+    rpc Track(TrackOption) returns (TrackResult) {}
+}
+//人体检测参数
+message TrackOption {
+    int32 caseId = 1;
+    bool caseInit = 2;
+    string image = 3;
+    bool dynamic = 4;
+}
+//人体位置
+message Location  {
+	int32 left = 1; 
+	int32 top = 2;
+	int32 width = 3;
+	int32 height = 4;
+}
+//人体信息
+message Info  {
+	Location Location = 1; 
+	int32 id       = 2; 
+}
+//人体数量
+message Count  {
+	int32 in = 1;
+	int32 out = 2;
+}
+//人体检测结果
+message TrackResult {
+	int32 personNum = 1;
+	repeated Info personInfo = 2; 
+	Count personCount = 3;
+	string Image = 4;
+}
