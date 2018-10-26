@@ -3,6 +3,7 @@ package body
 import (
 	"encoding/base64"
 	"fmt"
+	"image"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -47,19 +48,18 @@ func (b *BaiduBody) Track(imgurl string) (*TrackResult, error) {
 		return nil, err
 	}
 	req := url.Values{
-		"dynamic":   []string{"false"},
+		// "dynamic":   []string{"false"},
 		"case_id":   []string{strconv.FormatInt(time.Now().Unix(), 10)},
 		"case_init": []string{"false"},
 		"image":     []string{img},
-		//"dynamic":   []string{"true"},
-		// "area":      []string{"0", "0", "0", "0", "0", "0", "0", "0"},
+		"dynamic":   []string{"true"},
+		//"area":      []string{"0", "0", "0", "0", "0", "0", "0", "0"},
 
 	}
 	var ret struct {
 		core.BaiduResponse
 		TrackResult
 	}
-	// var ret TrackResult
 	if err := b.PostForm(urlBodyTracking, req, &ret); err != nil {
 		logrus.Errorf("track failed, %s", err)
 		return nil, err
@@ -81,5 +81,10 @@ func (b *BaiduBody) encodeImg(imgURL string) (string, error) {
 		return "", err
 	}
 	ret := base64.StdEncoding.EncodeToString(bts)
+	image, _, err := image.DecodeConfig(file)
+	if err != nil {
+		return "", err
+	}
+	image.Width
 	return ret, nil
 }

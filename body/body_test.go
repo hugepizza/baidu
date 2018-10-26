@@ -11,11 +11,11 @@ import (
 
 func Test_body(t *testing.T) {
 	flag.Set("alsologtostderr", "true")
-	tb := &BaiduBody{Core: core.NewCore("D1RUvOGwx9fy0Gd6wIGS1Rs8", "LifdRZPrEW2nNgxOdbsS8Qg6MTt0Ga84")}
+	tb := &BaiduBody{Core: core.NewCore("", "")}
 	resp, err := tb.Track("/home/wanglei/Pictures/test2.jpeg")
 	if err != nil {
 		logrus.Info(err)
 		return
 	}
-	logrus.Info(resp.PersonCount)
+	logrus.Info(resp.PersonNum)
 }
