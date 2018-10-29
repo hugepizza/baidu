@@ -100,11 +100,11 @@ message Angle {
 }
 //人脸在图片中的位置
 message FaceLocation  {
-	int32 left = 1; 
-	int32 top = 2;
-	int32 width = 3;
-	int32 height = 4;
-	int32 rotation = 5;
+	double left = 1; 
+	double top = 2;
+	double width = 3;
+	double height = 4;
+	double rotation = 5;
 }
 
 service Face{
